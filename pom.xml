@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.extnews</groupId>
+    <artifactId>extnews</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>extnews</name>
+    <description>Media management system</description>
+    <url>https://extnews.com</url>
+    <inceptionYear>2009</inceptionYear>
+    <properties>
+        <checkstyle.skip>true</checkstyle.skip>
+        <extnews.basedir>${basedir}</extnews.basedir>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <extnews.nexus.url>https://mvncache.opencast.org</extnews.nexus.url>
+        <extnews.nexus-backup.url>https://nexus.opencast.org</extnews.nexus-backup.url>
+
+        <!-- library version specifications -->
+        <cxf.version>3.2.6</cxf.version>
+        <jdk.version>1.8</jdk.version>
+        <karaf.version>4.2.2</karaf.version>
+        <osgi.compendium.version>5.0.0</osgi.compendium.version>
+        <osgi.core.version>5.0.0</osgi.core.version>
+        <osgi.enterprise.version>5.0.0</osgi.enterprise.version>
+    </properties>
+    
+    <modules>
+        <module>modules/common</module>
+        <module>modules/hello-world-api</module>
+        <module>modules/hello-world-impl</module>
+        <module>assemblies</module>
+    </modules>
+
+    <profiles>
+        <!-- simple hello world profile -->
+        <profile>
+            <id>hello-world</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>modules/hello-world-api</module>
+                <module>modules/hello-world-impl</module>
+            </modules>
+        </profile>
+    </profiles>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr4-runtime</artifactId>
+                <version>4.7.2</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>3.1.0</version>
+            </dependency>
+            <!-- OSGi -->
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.core</artifactId>
+                <version>${osgi.core.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.compendium</artifactId>
+                <version>${osgi.compendium.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>org.apache.felix.fileinstall</artifactId>
+                <version>3.6.4</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>org.apache.felix.metatype</artifactId>
+                <version>1.0.4</version>
+                <scope>provided</scope>
+            </dependency>
+            <!-- logging -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.26</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>1.7.26</version>
+            </dependency>
+
+            <!-- test -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-scr-plugin</artifactId>
+                    <version>1.26.0</version>
+                    <executions>
+                        <execution>
+                            <id>generate-scr-scrdescriptor</id>
+                            <goals>
+                                <goal>scr</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>3.5.0</version>
+                    <inherited>true</inherited>
+                    <configuration>
+                        <instructions>
+                            <Bundle-Category>extnews</Bundle-Category>
+                            <Bundle-DocURL>https://extnews.com/</Bundle-DocURL>
+                            <Bundle-Vendor>The EXTNews Project</Bundle-Vendor>
+                            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                        </instructions>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>1.8</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>
